@@ -1,0 +1,111 @@
+.sidebar-open {
+  overflow: hidden;
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+.sidebar.fade .sidebar-left {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  -o-transition:      -o-transform .3s ease-out;
+  transition:         transform .3s ease-out;
+  -webkit-transform: translate(-25%, 0);
+  -ms-transform: translate(-25%, 0);
+  -o-transform: translate(-25%, 0);
+  transform: translate(-25%, 0);
+}
+.sidebar.in .sidebar-left {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.sidebar-open .sidebar {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.sidebar-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000;
+}
+.sidebar-backdrop.fade {
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+.sidebar-backdrop.in {
+  filter: alpha(opacity=50);
+  opacity: .5;
+}
+
+//暂时不考虑不容的媒体
+.sidebar-dialog {
+
+}
+
+.sidebar-left {
+  margin: 0;
+  position: absolute;
+  z-index: 1001;
+  width: 300px;
+  height: 100%;
+  background: #373a47;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+  -webkit-transform: translate3d(-320px,0,0);
+  transform: translate3d(-320px,0,0);
+  -webkit-transition: -webkit-transform 0.4s;
+  transition: transform 0.4s;
+  -webkit-transition-timing-function: cubic-bezier(0.7,0,0.3,1);
+  transition-timing-function: cubic-bezier(0.7,0,0.3,1);
+  a {
+    color: #b8b7ad;
+  }
+  a:hover,a:focus{
+    color: #c94e50;;
+    text-decoration: none;
+  }
+
+  .menu .menu-list{
+    a {
+      display: block;
+      padding: 0.8em;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  //.sidebar-dialog {
+  //  width: 600px;
+  //  margin: 30px auto;
+  //}
+  //.sidebar-content {
+  //  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  //  box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  //}
+  //.sidebar-sm {
+  //  width: 300px;
+  //}
+}
+@media (min-width: 992px) {
+  //.sidebar-lg {
+  //  width: 900px;
+  //}
+}

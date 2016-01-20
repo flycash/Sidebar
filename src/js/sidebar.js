@@ -2,14 +2,20 @@
 (function() {
   "use strict";
   (function($) {
-    var Sidebar;
+    var Plugin, Sidebar;
     Sidebar = function(element, options) {
-      this.option = options;
+      this.options = options;
       this.$body = $(document.body);
       this.$element = $(element);
-      return this.isShown = false;
+      this.isShown = false;
+      return this.ignoreBackdropClick = false;
     };
-    Sidebar.DEFAULTS = {};
+    Sidebar.DEFAULTS = {
+      backdrop: true,
+      show: true
+    };
+    Sidebar.TRANSITION_DURATION = 300;
+    Sidebar.BACKDROP_TRANSITION_DURATION = 150;
     Sidebar.prototype.toggle = function(_relativeTarget) {
       if (this.isShown) {
         return this.hide();
@@ -21,11 +27,132 @@
       var that;
       that = this;
       if (this.isShown) {
-        0;
+        return;
       }
-      return this.isShown = true;
+      this.isShown = true;
+      this.$body.addClass("sidebar-open");
+      this.$element.on("click.dismiss.sidebar", "[data-dismiss='sidebar']", $.proxy(this.hide, this));
+      return this.backdrop(function() {
+        var transition;
+        transition = $.support.transition && that.$element.hasClass("fade");
+        if (!that.$element.parent().length) {
+          that.$element.appendTo(that.$body);
+        }
+        that.$element.show().scrollTop(0);
+        if (transition) {
+          that.$element[0].offsetWidth;
+        }
+        return that.$element.addClass("in").attr("aria-hidden", false);
+      });
     };
-    return console.log("end");
+    Sidebar.prototype.hide = function(e) {
+      if (e) {
+        e.preventDefault();
+      }
+      if (!this.isShown) {
+        return;
+      }
+      this.isShown = false;
+      this.$element.removeClass("in").off("click.dismiss.sidebar");
+      if ($.support.transition && this.$element.hasClass("fade")) {
+        return this.$element.one("bsTransitionEnd", $.proxy(this.hideSidebar, this)).emulateTransitionEnd(Sidebar.TRANSITION_DURATION);
+      } else {
+        return this.hideSidebar();
+      }
+    };
+    Sidebar.prototype.hideSidebar = function() {
+      var that;
+      that = this;
+      this.$element.hide();
+      return this.backdrop(function() {
+        return that.$body.removeClass("sidebar-open");
+      });
+    };
+    Sidebar.prototype.removeBackdrop = function() {
+      if (this.$backdrop) {
+        this.$backdrop.remove();
+        return this.$backdrop = null;
+      }
+    };
+    Sidebar.prototype.backdrop = function(callback) {
+      var animate, callbackRemove, doAnimate, that;
+      that = this;
+      animate = this.$element.hasClass("fade") ? "fade" : "";
+      if (this.isShown && this.options.backdrop) {
+        doAnimate = $.support.transition && animate;
+        this.$backdrop = $(document.createElement("div")).addClass("sidebar-backdrop " + animate).appendTo(this.$body);
+        this.$element.on("click.dismiss.sidebar", $.proxy(function(e) {
+          if (this.ignoreBackdropClick) {
+            this.ignoreBackdropClick = false;
+            return;
+          }
+          if (e.target !== e.currentTarget) {
+            return;
+          }
+          if (this.options.backdrop === 'static') {
+            return this.$element[0].focus();
+          } else {
+            return this.hide();
+          }
+        }, this));
+        if (animate) {
+          this.$backdrop[0].offsetWidth;
+        }
+        this.$backdrop.addClass("in");
+        if (!callback) {
+          return;
+        }
+        if (doAnimate) {
+          return this.$backdrop.one("bsTransitionEnd", callback).emulateTransitionEnd(Sidebar.BACKDROP_TRANSITION_DURATION);
+        } else {
+          return callback();
+        }
+      } else if (!this.isShown && this.$backdrop) {
+        this.$backdrop.removeClass("in");
+        callbackRemove = function() {
+          that.removeBackdrop();
+          if (callback) {
+            return callback();
+          }
+        };
+        if ($.support.transition && this.$element.hasClass("fade")) {
+          return this.$backdrop.one("bsTransitionEnd", callbackRemove).emulateTransitionEnd(Sidebar.BACKDROP_TRANSITION_DURATION);
+        } else {
+          return callbackRemove();
+        }
+      } else if (callback) {
+        return callback();
+      }
+    };
+    Plugin = function(option, _relativeTarget) {
+      return this.each(function() {
+        var $this, data, options;
+        $this = $(this);
+        data = $this.data("sidebar");
+        options = $.extend({}, Sidebar.DEFAULTS, $this.data(), typeof option === "object" && option);
+        if (!data) {
+          data = new Sidebar(this, options);
+          $this.data("sidebar", data);
+        }
+        if (typeof option === "string") {
+          return data[option](_relativeTarget);
+        } else if (options.show) {
+          return data.show(_relativeTarget);
+        }
+      });
+    };
+    $.fn.sidebar = Plugin;
+    $.fn.sidebar.Constructor = Sidebar;
+    return $(document).on("click", "[data-toggle='sidebar']", function(e) {
+      var $target, $this, option;
+      $this = $(this);
+      $target = $($this.attr("data-target"));
+      option = $target.data("sidebar") ? "toggle" : $.extend({}, $target.data(), $this.data());
+      if ($this.is("a")) {
+        e.preventDefault();
+      }
+      return Plugin.call($target, option, this);
+    });
   })(window.jQuery);
 
 }).call(this);
