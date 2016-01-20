@@ -101,7 +101,7 @@
         else this.hide()
       , this
 
-#     准备动画,这是bootstrap里面用的一句话,我不知道拿来干什么
+#     准备动画
       if animate
         this.$backdrop[0].offsetWidth
 

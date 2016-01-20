@@ -21,8 +21,32 @@
   -ms-transform: translate(-25%, 0);
   -o-transform: translate(-25%, 0);
   transform: translate(-25%, 0); }
+.sidebar.fade .sidebar-right {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  -o-transition: -o-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  -webkit-transform: translate(25%, 0);
+  -ms-transform: translate(25%, 0);
+  -o-transform: translate(25%, 0);
+  transform: translate(25%, 0); }
+.sidebar.fade .sidebar-top {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  -o-transition: -o-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  -webkit-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  -o-transform: translate(0, -25%);
+  transform: translate(0, -25%); }
+.sidebar.fade .sidebar-bottom {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  -o-transition: -o-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  -webkit-transform: translate(0, 25%);
+  -ms-transform: translate(0, 25%);
+  -o-transform: translate(0, 25%);
+  transform: translate(0, 25%); }
 
-.sidebar.in .sidebar-left {
+.sidebar.in .sidebar-left, .sidebar.in .sidebar-right, .sidebar.in .sidebar-top, .sidebar.in .sidebar-bottom {
   -webkit-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
   -o-transform: translate(0, 0);
@@ -54,28 +78,33 @@
   filter: alpha(opacity=50);
   opacity: .5; }
 
-.sidebar-left {
+.sidebar-dialog {
   margin: 0;
-  position: absolute;
-  z-index: 1001;
-  width: 300px;
-  height: 100%;
-  background: #373a47;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
-  -webkit-transform: translate3d(-320px, 0, 0);
-  transform: translate3d(-320px, 0, 0);
-  -webkit-transition: -webkit-transform 0.4s;
-  transition: transform 0.4s;
-  -webkit-transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
-  transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1); }
-  .sidebar-left a {
+  background: #373a47; }
+  .sidebar-dialog .menu .menu-list a {
+    padding: 0.8em;
     color: #b8b7ad; }
-  .sidebar-left a:hover, .sidebar-left a:focus {
-    color: #c94e50;
-    text-decoration: none; }
-  .sidebar-left .menu .menu-list a {
-    display: block;
-    padding: 0.8em; }
+  .sidebar-dialog .menu .menu-list a:hover, .sidebar-dialog .menu .menu-list a:focus {
+    text-decoration: none;
+    color: #c94e50; }
+
+.sidebar-left, .sidebar-right {
+  width: 300px;
+  height: 100%; }
+  .sidebar-left .menu .menu-list a, .sidebar-right .menu .menu-list a {
+    display: block; }
+
+.sidebar-right {
+  float: right; }
+
+.sidebar-top, .sidebar-bottom {
+  width: 100%;
+  height: 120px; }
+
+.sidebar-bottom {
+  position: absolute;
+  bottom: 0; }
 
 /*# sourceMappingURL=sidebar.css.map */
